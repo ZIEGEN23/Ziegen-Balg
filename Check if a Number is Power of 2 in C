@@ -1,0 +1,9 @@
+#include <stdio.h>
+int main() {
+    int n;
+    printf("Enter a number: ");
+    scanf("%d", &n);
+    if(n > 0 && (n & (n - 1)) == 0) printf("Yes, it's a power of 2");
+    else printf("No, it's not");
+    return 0;
+}
