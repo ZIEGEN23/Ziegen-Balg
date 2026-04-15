@@ -1,0 +1,8 @@
+#include <stdio.h>
+int main() {
+    int n = 5, i;
+    unsigned long long fact = 1;
+    for(i=1; i<=n; ++i) fact *= i;
+    printf("Factorial: %llu", fact);
+    return 0;
+}
