@@ -1,0 +1,6 @@
+#include <stdio.h>
+int main() {
+    int dividend = 25, divisor = 4;
+    printf("Quotient: %d, Remainder: %d", dividend/divisor, dividend%divisor);
+    return 0;
+}
