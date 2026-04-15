@@ -1,0 +1,17 @@
+#include <stdio.h>
+int queue[10], front = 0, rear = -1;
+int main() {
+    int choice, val;
+    while(1) {
+        printf("\n1.Enqueue 2.Dequeue 3.Exit: ");
+        scanf("%d", &choice);
+        if(choice == 1) {
+            printf("Enter value: "); scanf("%d", &val);
+            queue[++rear] = val;
+        } else if(choice == 2) {
+            if(front > rear) printf("Empty\n");
+            else printf("Dequeued: %d\n", queue[front++]);
+        } else break;
+    }
+    return 0;
+}
