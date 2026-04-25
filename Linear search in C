@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int main() {
+    int n, i, search, found = 0;
+
+    // 1. Get array size from user
+    printf("Enter the number of elements in the array: ");
+    if (scanf("%d", &n) != 1) return 1; // Validate input
+
+    // 2. Declare array (Variable Length Array supported in C99+)
+    int arr[n]; 
+
+    // 3. Take array elements as input
+    printf("Enter %d integers:\n", n);
+    for (i = 0; i < n; i++) {
+        printf("Element %d: ", i);
+        scanf("%d", &arr[i]); // Use '&' to provide the memory address
+    }
+
+    // 4. Get value to search for
+    printf("\nEnter the value to search for: ");
+    scanf("%d", &search);
+
+    // 5. Searching logic
+    for (i = 0; i < n; i++) {
+        if (arr[i] == search) {
+            printf("%d found at index %d.\n", search, i);
+            found = 1;
+            break; 
+        }
+    }
+
+    if (!found) {
+        printf("%d is not present in the array.\n", search);
+    }
+
+    return 0;
+}
