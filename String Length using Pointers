@@ -1,0 +1,8 @@
+#include <stdio.h>
+int main() {
+    char s[100], *p = s;
+    scanf("%s", s);
+    while(*p != '\0') p++;
+    printf("Length: %ld", p - s);
+    return 0;
+}
