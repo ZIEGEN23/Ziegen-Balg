@@ -1,0 +1,7 @@
+#include <stdio.h>
+int main() {
+    int n; scanf("%d", &n);
+    int *p = &n, **dp = &p;
+    printf("Value using double pointer: %d", **dp);
+    return 0;
+}
