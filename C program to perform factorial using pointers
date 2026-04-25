@@ -1,0 +1,8 @@
+#include <stdio.h>
+void fact(int n, long *f) { *f = 1; for(int i=1; i<=n; i++) *f *= i; }
+int main() {
+    int n; long f; scanf("%d", &n);
+    fact(n, &f);
+    printf("Factorial: %ld", f);
+    return 0;
+}
