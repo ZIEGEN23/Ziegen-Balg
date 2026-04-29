@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+/**
+ * Brian Kernighan's Algorithm to count set bits.
+ * Time complexity: O(number of set bits)
+ */
+int countSetBits(int n) {
+    int count = 0;
+    while (n > 0) {
+        n &= (n - 1); // Clears the lowest set bit
+        count++;
+    }
+    return count;
+}
+
+int main() {
+    int num = 29; // Binary: 11101
+    printf("Number of set bits in %d: %d\n", num, countSetBits(num));
+    return 0;
+}
