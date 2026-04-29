@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define T 3
+
+struct BTreeNode {
+    int keys[2 * T - 1];
+    struct BTreeNode *C[2 * T];
+    int n, leaf;
+};
+
+struct BTreeNode* createNode(int leaf) {
+    struct BTreeNode* node = (struct BTreeNode*)malloc(sizeof(struct BTreeNode));
+    node->leaf = leaf;
+    node->n = 0;
+    return node;
+}
+
+void splitChild(struct BTreeNode* x, int i, struct BTreeNode* y) {
+    struct BTreeNode* z = createNode(y->leaf);
+    z->n = T - 1;
+    for (int j = 0; j < T - 1; j++) z->keys[j] = y->keys[j + T];
+    if (!y->leaf) {
+        for (int j = 0; j < T; j++) z->C[j] = y->C[j + T];
+    }
+    y->n = T - 1;
+    for (int j = x->n; j >= i + 1; j--) x->C[j + 1] = x->C[j];
+    x->C[i + 1] = z;
+    for (int j = x->n - 1; j >= i; j--) x->keys[j + 1] = x->keys[j];
+    x->keys[i] = y->keys[T - 1];
+    x->n++;
+}
+
+void insertNonFull(struct BTreeNode* x, int k) {
+    int i = x->n - 1;
+    if (x->leaf) {
+        while (i >= 0 && x->keys[i] > k) {
+            x->keys[i + 1] = x->keys[i];
+            i--;
+        }
+        x->keys[i + 1] = k;
+        x->n++;
+    } else {
+        while (i >= 0 && x->keys[i] > k) i--;
+        if (x->C[i + 1]->n == 2 * T - 1) {
+            splitChild(x, i + 1, x->C[i + 1]);
+            if (x->keys[i + 1] < k) i++;
+        }
+        insertNonFull(x->C[i + 1], k);
+    }
+}
+
+void insert(struct BTreeNode** root, int k) {
+    if (!(*root)) {
+        *root = createNode(1);
+        (*root)->keys[0] = k;
+        (*root)->n = 1;
+    } else {
+        if ((*root)->n == 2 * T - 1) {
+            struct BTreeNode* s = createNode(0);
+            s->C[0] = *root;
+            splitChild(s, 0, *root);
+            int i = (s->keys[0] < k) ? 1 : 0;
+            insertNonFull(s->C[i], k);
+            *root = s;
+        } else insertNonFull(*root, k);
+    }
+}
+
+void traverse(struct BTreeNode* root) {
+    if (root) {
+        int i;
+        for (i = 0; i < root->n; i++) {
+            if (!root->leaf) traverse(root->C[i]);
+            printf(" %d", root->keys[i]);
+        }
+        if (!root->leaf) traverse(root->C[i]);
+    }
+}
+
+int main() {
+    struct BTreeNode* root = NULL;
+    insert(&root, 10); insert(&root, 20); insert(&root, 5); insert(&root, 6); insert(&root, 12);
+    printf("Traversal of the B-tree: ");
+    traverse(root);
+    return 0;
+}
