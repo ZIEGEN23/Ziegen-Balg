@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int id;
+    char name[50];
+    float gpa;
+} Student;
+
+void addStudent(FILE *fp) {
+    Student s;
+    printf("Enter ID, Name, and GPA: ");
+    scanf("%d %s %f", &s.id, s.name, &s.gpa);
+    fwrite(&s, sizeof(Student), 1, fp);
+}
+
+void displayStudents(FILE *fp) {
+    Student s;
+    rewind(fp); // Back to start of file
+    printf("\nID\tName\tGPA\n---\t----\t---\n");
+    while (fread(&s, sizeof(Student), 1, fp)) {
+        printf("%d\t%s\t%.2f\n", s.id, s.name, s.gpa);
+    }
+}
+
+int main() {
+    FILE *fp = fopen("students.dat", "ab+");
+    if (!fp) return 1;
+
+    int choice;
+    do {
+        printf("\n1. Add Student\n2. View All\n3. Exit\nChoice: ");
+        scanf("%d", &choice);
+        if (choice == 1) addStudent(fp);
+        else if (choice == 2) displayStudents(fp);
+    } while (choice != 3);
+
+    fclose(fp);
+    return 0;
+}
