@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+void tokenize(char *code) {
+    char *keywords[] = {"int", "return", "if", "else"};
+    char buffer[32];
+    int j = 0;
+    for (int i = 0; code[i] != '\0'; i++) {
+        if (isalnum(code[i])) buffer[j++] = code[i];
+        else if ((code[i] == ' ' || code[i] == '\n') && (j != 0)) {
+            buffer[j] = '\0'; j = 0;
+            printf("Token: %s\n", buffer);
+        }
+    }
+}
+
+int main() {
+    char code[] = "int main() { return 0; }";
+    tokenize(code);
+    return 0;
+}
