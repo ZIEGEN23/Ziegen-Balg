@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+/**
+ * Standard Binary Search on a sorted array.
+ * Returns the index of 'target' if found, else -1.
+ */
+int binarySearch(int arr[], int size, int target) {
+    int low = 0, high = size - 1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2; // Prevents potential overflow
+
+        if (arr[mid] == target)
+            return mid;
+        
+        if (arr[mid] < target)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    return -1;
+}
+
+int main() {
+    int data[] = {2, 5, 8, 12, 16, 23, 38, 56, 72, 91}; // Must be sorted
+    int n = sizeof(data) / sizeof(data[0]);
+    int target;
+
+    printf("Enter a number to search for: ");
+    scanf("%d", &target);
+
+    int result = binarySearch(data, n, target);
+    if (result != -1)
+        printf("Element found at index: %d\n", result);
+    else
+        printf("Element not found in the array.\n");
+
+    return 0;
+}
