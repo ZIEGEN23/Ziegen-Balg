@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Patient {
+    int id;
+    char name[50];
+    struct Patient *next;
+} Patient;
+
+Patient* head = NULL;
+
+void addPatient(int id, char name[]) {
+    Patient *newP = malloc(sizeof(Patient));
+    newP->id = id;
+    strcpy(newP->name, name);
+    newP->next = head;
+    head = newP;
+}
+
+void display() {
+    Patient *temp = head;
+    while (temp) {
+        printf("ID: %d, Name: %s\n", temp->id, temp->name);
+        temp = temp->next;
+    }
+}
+
+int main() {
+    addPatient(101, "John Doe");
+    addPatient(102, "Jane Smith");
+    display();
+    return 0;
+}
