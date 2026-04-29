@@ -1,0 +1,56 @@
+#include <stddef.h>
+#include <stdio.h>
+
+typedef struct Block {
+    size_t size;
+    int free;
+    struct Block* next;
+} Block;
+
+static char memory[10000];
+Block* freeList = (Block*)memory;
+
+void initialize() {
+    freeList->size = 10000 - sizeof(Block);
+    freeList->free = 1;
+    freeList->next = NULL;
+}
+
+void split(Block* fitting_slot, size_t size) {
+    Block* new_block = (Block*)((char*)fitting_slot + size + sizeof(Block));
+    new_block->size = fitting_slot->size - size - sizeof(Block);
+    new_block->free = 1;
+    new_block->next = fitting_slot->next;
+    fitting_slot->size = size;
+    fitting_slot->free = 0;
+    fitting_slot->next = new_block;
+}
+
+void* my_malloc(size_t noOfBytes) {
+    Block *curr = freeList;
+    while (((curr->size < noOfBytes) || (curr->free == 0)) && (curr->next != NULL)) {
+        curr = curr->next;
+    }
+    if (curr->size >= noOfBytes) {
+        if (curr->size > noOfBytes + sizeof(Block)) split(curr, noOfBytes);
+        else curr->free = 0;
+        return (void*)(++curr);
+    }
+    return NULL;
+}
+
+void my_free(void* ptr) {
+    if (((void*)memory <= ptr) && (ptr <= (void*)(memory + 10000))) {
+        Block* curr = (Block*)ptr - 1;
+        curr->free = 1;
+    }
+}
+
+int main() {
+    initialize();
+    int* p = (int*)my_malloc(10 * sizeof(int));
+    if (p) printf("Memory allocated.\n");
+    my_free(p);
+    printf("Memory freed.\n");
+    return 0;
+}
