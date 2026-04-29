@@ -1,0 +1,7 @@
+// Requires a Priority Queue and Heuristic function
+// Structure:
+typedef struct {
+    int x, y;
+    float f, g, h;
+} Node;
+// Logic involves exploring neighbors and calculating f = g + h.
