@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct VM {
+    int numObjects;
+    // ...
+} VM;
+
+void mark(struct Object* obj) {
+    if (obj->marked) return;
+    obj->marked = 1;
+    // recurse children...
+}
+
+void sweep(VM* vm) {
+    // iterate all objects and free unmarked ones.
+}
